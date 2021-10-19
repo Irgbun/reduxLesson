@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+import type { Store } from './store'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+interface ReduxStateProps {
+  value: number;
 }
 
-export default App;
+interface ReduxDispatchProps {
+  increase: () => void;
+}
+
+class App extends React.Component<ReduxStateProps & ReduxDispatchProps> {
+  render() {
+    return (
+      <div>
+        <p>Значение: {this.props.value}</p>
+        <button onClick={ this.props.increase }>Увеличить меня</button>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (reduxState: Store):ReduxStateProps => {
+  return {
+    value: reduxState.value,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any): ReduxDispatchProps => {
+  return {
+    increase: () => dispatch({ type: 'increase' })
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
