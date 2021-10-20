@@ -1,39 +1,47 @@
 import React from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import type { Store } from './store'
+import type { RootState } from './store';
+import { COUNTER_ACTIONS } from './store/counter';
 
 
 interface ReduxStateProps {
-  value: number;
+  myValue: number;
 }
 
 interface ReduxDispatchProps {
-  increase: () => void;
+  increaseValue: () => void;
+  resetValue: () => void;
+  increaseValueOnValue: (oncreaseOn: number) => void;
 }
 
-class App extends React.Component<ReduxStateProps & ReduxDispatchProps> {
+class AppBase extends React.Component<ReduxStateProps & ReduxDispatchProps> {
   render() {
     return (
       <div>
-        <p>Значение: {this.props.value}</p>
-        <button onClick={ this.props.increase }>Увеличить меня</button>
+        <p>Значение: {this.props.myValue}</p>
+        <button onClick={this.props.increaseValue}>Увеличить меня</button>
+        <button onClick={this.props.resetValue}>Сбросить счетчик</button>
+        <button onClick={() => this.props.increaseValueOnValue(3)}>Увеличить меня на 3</button>
+        <button onClick={() => this.props.increaseValueOnValue(10)}>Увеличить меня на 10</button>
       </div>
     );
   }
 }
 
-const mapStateToProps = (reduxState: Store):ReduxStateProps => {
+const mapStateToProps = (reduxState: RootState):ReduxStateProps => {
   return {
-    value: reduxState.value,
-  }
+    myValue: reduxState.counter.value,
+  };
 }
 
 const mapDispatchToProps = (dispatch: any): ReduxDispatchProps => {
   return {
-    increase: () => dispatch({ type: 'increase' })
+    increaseValue: () => dispatch({ type: COUNTER_ACTIONS.INCREASE }),
+    increaseValueOnValue: (payload: number) => dispatch({ type: COUNTER_ACTIONS.INCREASE_ON_VALUE, payload }),
+    resetValue: () => dispatch({ type: COUNTER_ACTIONS.RESET }),
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export const App = connect(mapStateToProps, mapDispatchToProps)(AppBase)

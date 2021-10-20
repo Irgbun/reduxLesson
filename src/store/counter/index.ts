@@ -1,2 +1,2 @@
-export { counterReducer } from './reducer'
-export type { Store } from './reducer'
+export { counterReducer } from './reducer';
+export { COUNTER_ACTIONS } from './constants';

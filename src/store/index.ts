@@ -1,2 +1,2 @@
-export { store } from './store'
-export type { Store } from './store/counter/'
+export { store } from './store';
+export type { RootState } from './store';
