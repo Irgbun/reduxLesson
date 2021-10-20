@@ -4,25 +4,23 @@ import { counterReducer } from './counter'
 // В компонентах стейт мутировать нельзя
 // Redux стейт мутировать нельзя
 
-
-// принимает текущее store, возвращает обновленный
-// { type: 'increase' }
-
 // const reducer = (store: any, action: Action):any => {
 //     return {
-//         ...store, 
+//         ...store,
 //         counter: counterReducer(store.counter, action)
 //     }
 // }
 
-
 const reducer = combineReducers({
     counter: counterReducer,
-})
-
+});
 
 export const store = createStore(
-    reducer, 
+    reducer,
     // @ts-ignore
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
+    window.__REDUX_DEVTOOLS_EXTENSION__?.(),
+)
+
+// ReturnType - принимает тип функции и возвращает тип, который возвращает эта функция
+// store.getState - делали ее console.log на лекции, эта функция которая возвроащает redux store
+export type RootState = ReturnType<typeof store.getState>;
